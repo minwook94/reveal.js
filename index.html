@@ -17,19 +17,78 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h1> two phase commit </h1>
+					<h1 style = "color : skyblue"> two phase commit </h1>
 					<h2> 2단계 커밋 프로토콜 </h2>
 				</section>
 				<section>
-					<h3> 2단계 커밋 프로토콜이란? </h3>
-					<h3> 트랜잭션이 분산 데이터베이스의 모든 기록을 적절히 갱신하게 해 주는 기법.</h3>
-					<h3> 첫째, 데이터베이스는 트랜잭션을 수신하였다는 것을 확인을 합니다. 둘째, 각 데이터베이스는 트랜잭션을 수행하라는 지시를 받고 실제 갱신을 합니다.</h3>
+					<h2 style = "color : skyblue"> Two-phase Commit이란? </h2>
+					<h3 style = "font-size : 40px"> 프로그래머가 별도의 프로그램 없이 글로벌 데이터베이스의 무결성을 보장하는 기법입니다.</h3>
+					<h3 style = "font-size : 40px"> 분산 환경 데이터베이스를 사용하는 경우 사용됩니다.</h3>
+				</section>
+
+				<section>
+					<h1 style = "color : skyblue">
+						구성
+					</h1>
+
+					<h3>
+						준비 단계(Prepare Phase)와 
+						
+					</h3>
+					<h3>
+						완료 단계(Commit phase)로 나누어집니다. 
+					</h3>	
+				</section>
+
+				<section>
+					<h2>
+						준비 단계 및 완료 단계
+					</h2>
+
+					<h3 style = "font-size : 30px">
+						진행자가 분산 트랜잭션에 참석한 노드들에 대해 commit이나 Rollback을 수행해도 되는가를 확인하는 단계입니다.
+					</h3>
+					<h3 style = "font-size : 30px">
+						준비 단계에서 Commit해도 좋다는 응답을 받고 트랜잭션을 Commit하는 단계입니다.
+						어떠한 노드라도 준비가 안되었다는 응답이 있으면 트랜잭션을 Rollback합니다.
+					</h3>
+				</section>
+
+				<section>
+					<h1 style = "font-size : 50px" style = "color : skyblue">
+						Two-phase Commit의 수행
+					</h1>
+
+					<h3 style = "font-size : 30px">
+						(1) 준비 단계에 대한 응답은 prepared, Read-Only, Abort가 있습니다.
+					</h3>
+					<h3 style = "font-size : 30px">
+						Prepared는 Data가 정상적으로 수정되었으며 Prepare되었음을 의미합니다.
+					</h3>
+					<h3 style = "font-size : 30px">
+						Read-Only 는 해당 노드에 데이터의 수정이 없었다는 의미입니다.
+					</h3>
+					<h3 style = "font-size : 30px">
+						Abort는 Prepare되지 않았음을 의미합니다.
+					</h3>
+
+					<h3 style = "font-size : 30px">
+						(2) 모든 노드에서 prepared가 되면 commit phase가 수행됩니다.
+					</h3>
+					<h3 style = "font-size : 30px">
+						그러나 한 노트라도 abort 되면 commit phase에서 전 노드에 대한 Rollback을 수행합니다.
+					</h3>
 
 				</section>
-				<section>
-					
-					
-				</section>
+
+
+
+
+
+
+
+
+
 
 			</div>
 		</div>
