@@ -37,20 +37,20 @@
 					</h3>
 					<h3>
 						완료 단계(Commit phase)로 나누어집니다. 
-					</h3>	
+					</h3>
 				</section>
 
 				<section>
 					<h2>
 						준비 단계 및 완료 단계
 					</h2>
+					<img src="./img/2PC.png" alt="사진">
 
 					<h3 style = "font-size : 30px">
-						진행자가 분산 트랜잭션에 참석한 노드들에 대해 commit이나 Rollback을 수행해도 되는가를 확인하는 단계입니다.
+						2PC는 그림과 마찬가지로 Request -> Prepared -> Commit을 거칩니다.
 					</h3>
 					<h3 style = "font-size : 30px">
-						준비 단계에서 Commit해도 좋다는 응답을 받고 트랜잭션을 Commit하는 단계입니다.
-						어떠한 노드라도 준비가 안되었다는 응답이 있으면 트랜잭션을 Rollback합니다.
+						일반적으로 commit은 prepare-commit으로 이루어진다는 걸 생각해 봤을 때 하나의 layer가 추가되었다고 할 수 있습니다.
 					</h3>
 				</section>
 
