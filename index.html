@@ -12,6 +12,14 @@
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+		<style>
+			h3{
+				font-size : 300px;
+				color : red;
+			};
+
+		</style>
 	</head>
 	<body>
 		<div class="reveal">
@@ -21,75 +29,92 @@
 					<h2> 2단계 커밋 프로토콜 </h2>
 				</section>
 				<section>
-					<h2 style = "color : skyblue"> Two-phase Commit이란? </h2>
-					<h3 style = "font-size : 40px"> 프로그래머가 별도의 프로그램 없이 글로벌 데이터베이스의 무결성을 보장하는 기법입니다.</h3>
-					<h3 style = "font-size : 40px"> 분산 환경 데이터베이스를 사용하는 경우 사용됩니다.</h3>
+					<h3> Two-phase Commit -> 트랜잭션 </h3>
+					<br>
+					<h3 style = "font-size: 30px;"> 트랜잭션은 시작과 끝이 있는 독립적인 일 여러 개를 하나로 묶어놓고 그 중 어느 하나라도 실패하면 모든 일들을 시작하기 전 상태로 돌리는 하나의 작업 단위를 말합니다.</h3>
+					<h3 style = "font-size: 30px;"> 여러 개의 일을 묶어놓은 것이지만 하나의 작업으로 보는 것입니다.</h3>
 				</section>
 
 				<section>
 					<h1 style = "color : skyblue">
-						구성
+						ACID 및 예시
 					</h1>
-
-					<h3>
-						준비 단계(Prepare Phase)와 
-						
+					<br>
+					<h3 style = "font-size:30px">ACID : 트랜잭션이 안전하게 수행된다는 것을 보장하기 위한 4가지 성질</h3>
+					<br>
+					<h3 style = "font-size:30px">
+						원자성 -> 은행 간 이체
 					</h3>
-					<h3>
-						완료 단계(Commit phase)로 나누어집니다. 
+					<br>
+				</section>
+				<section>
+					<h3 style = "font-size:40px">
+						일관성
 					</h3>
+					<img src="./img/consistency.png" alt="사진">
 				</section>
 
 				<section>
-					<h2>
-						준비 단계 및 완료 단계
-					</h2>
-					<img src="./img/2PC.png" alt="사진">
-
-					<h3 style = "font-size : 30px">
-						2PC는 그림과 마찬가지로 Request -> Prepared -> Commit을 거칩니다.
+					<h3 style = "font-size:30px">
+						고립성
 					</h3>
-					<h3 style = "font-size : 30px">
-						일반적으로 commit은 prepare-commit으로 이루어진다는 걸 생각해 봤을 때 하나의 layer가 추가되었다고 할 수 있습니다.
-					</h3>
+					<img src="./img/Isolation.png" alt="사진" width="400" height = "400">
+					<h3 style = "font-size:25px">다수의 트랜잭션이 동시에 수행되더라도 한번에 하나씩 수행되는 것과 동일한 결과를 가져야 하는 성질</h3>
 				</section>
 
 				<section>
-					<h1 style = "font-size : 50px" style = "color : skyblue">
-						Two-phase Commit의 수행
-					</h1>
 
-					<h3 style = "font-size : 30px">
-						(1) 준비 단계에 대한 응답은 prepared, Read-Only, Abort가 있습니다.
-					</h3>
-					<h3 style = "font-size : 30px">
-						Prepared는 Data가 정상적으로 수정되었으며 Prepare되었음을 의미합니다.
-					</h3>
-					<h3 style = "font-size : 30px">
-						Read-Only 는 해당 노드에 데이터의 수정이 없었다는 의미입니다.
-					</h3>
-					<h3 style = "font-size : 30px">
-						Abort는 Prepare되지 않았음을 의미합니다.
-					</h3>
-
-					<h3 style = "font-size : 30px">
-						(2) 모든 노드에서 prepared가 되면 commit phase가 수행됩니다.
-					</h3>
-					<h3 style = "font-size : 30px">
-						그러나 한 노트라도 abort 되면 commit phase에서 전 노드에 대한 Rollback을 수행합니다.
-					</h3>
-
+					<h3>지속성</h3>
+					<br>
+					<h3 style = "font-size:30px">성공적으로 수행된 트랜잭션은 영원히 반영되어야 함을 말합니다.</h3>
+					<h3 style = "font-size:30px">비휘발성 저장장치(하드디스크나 디스크 등과 같은 보조기억장치)에 저장됨을 의미합니다.</h3>
 				</section>
 
+				<section>
+					<h2>2PC(Two-phase commit)</h2>
+					<br>
+					<img src="./img/2pc.png" alt="사진">
+					<br>
+					<h6>트랜잭션을 커밋할지, 롤백할지에 대한 분산 트랜잭션에 관여하는 분산 알고리즘입니다.</h6>
+					<h6>coodinator(코디네이터) : 트랜잭션을 만드는 트랜잭션 관리자</h6>
+					<h6>cohort : 코디네이터가 보낸 트랜잭션에 대해 예/아니오 상태로 작업 준비 상황을 알립니다.</h6>
+				</section>
+				<section>
+					<h2>작업요청 단계</h2>
+					<h6>1. 코디네이터는 코호트에게 커밋이 가능한지에 대한 메시지를 전송하고 응답을 기다립니다.</h6>
+					<h6>각 코호트 (2개 이상)는 vote(투표) 메시지를 전송합니다. 작업준비 여부에 따라서 yes/no를 전송합니다.</h6>
+				</section>
+				<section>
+					<h2>반영 단계</h2>
+					<h6>1. 성공 시에 코호트에 커밋 메시지를 전송, 리소스 락을 풉니다.</h6>
+					<h6>실패 시에는 코호트에 rollback 메시지를 전송 후 undo log를 이용해서 원래 상태로 복구하고 리소스 락을 해제합니다.</h6>
+					<h6>2. 각 코호트는 트랜잭션 관리자에게 acknowlegment(승인)를 전송합니다.</h6>
+					<h6>성공이면 작업을 완료, 실패하면 트랜잭션을 복구합니다.</h6>
+				</section>
+				<section>
+					<h2>2pc의 문제점</h2>
+					<br>
+					<h6>2pc를 사용하면서도 문제점이 발생할 수 있습니다.</h6>
+					<h6>코호트가 전송한 vote 메시지를 코디네이터가 죽어서 commit이나 rollback 메시지를 보내지 못하면</h6>
+					<h6>yes 메시지를 보낸 코호트가 안전하게 상태를 회복할 방법이 존재하지 않습니다.</h6>
+					<h6>이는 yes 메시지를 보낸 코호트의 상태가 undefind이기 때문입니다.</h6>
+					<h6>이에 관해서는 3pc(three phase commit)에 대해서 더 공부할 필요가 있습니다.</h6>
+					<br>
+					<h6>또한 각각 다른 특징을 가진 DB를 분리한 상황에서는 구현이 쉽지 않습니다.</h6>
 
 
+				</section>
+				<section>
+					<h2>DB와 관련된 얘기</h2>
+					<br>
+					<h6>DB의 클러스터링 기법(비슷한 데이터끼리 묶어주는 머신러닝 기법)에 주로 사용되는 편이며 </h6>
+					<h6>mysql에서는 NDB cluster가 2PC를 이용하고 있고, 오라클에서도 7.0 버전 이후에서 제공되고 있습니다.</h6>
+					<h6>국내에는 GOLDILOCKS(골디락)가 있습니다.</h6>
+				</section>
+				<section>
 
 
-
-
-
-
-
+				</section>
 			</div>
 		</div>
 
